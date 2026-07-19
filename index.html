@@ -15,13 +15,13 @@
     position: relative; z-index: 1;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     height: 100vh;
-    font-family: 'Courier New', monospace;
+    font-family: 'Times New Roman', serif;
     color: #111;
     pointer-events: none;
   }
 
   .card {
-    background: #fff;
+    background: #FFF9E6;
     padding: 2.5rem 3rem;
     border: 2px solid #111;
     text-align: center;
@@ -29,7 +29,6 @@
 
   h1 {
     font-size: clamp(2rem, 6vw, 4rem);
-    letter-spacing: 0.05em;
     font-weight: 400;
     margin: 0;
   }
@@ -88,14 +87,14 @@ uniform float u_speed;
 
 // ---- tunable knobs ----
 
-const float SCALE     = 68.0;   // zoom-out factor: higher = smaller features
-const float SKEW      = 1.0;    // diagonal bias amount
-const float THRESHOLD = 0.55;   // cutoff for black / white
-const vec2  DRIFT     = vec2(0.3, 0.3);  // panning direction (x/y == SKEW)
+const float SCALE     = 72.0;   // zoom-out factor: higher = smaller features
+const float SKEW      = 0.6;    // diagonal bias amount
+const float THRESHOLD = 0.56;   // cutoff for black / white
+const vec2  DRIFT     = vec2(0.18, 0.3);  // panning direction (x/y == SKEW)
 const float ROT_ANGLE = 0.5;    // rotation between FBM octaves
 const int   OCTAVES   = 2;      // detail layers (fewer = rounder blobs)
-const vec3  BLOB_COLOUR       = vec3(0.851, 0.608, 0.0);
-const vec3  BACKGROUND_COLOUR = vec3(0.988, 0.961, 0.882);
+const vec3  BLOB_COLOUR       = vec3(0.949, 0.808, 0.380);
+const vec3  BACKGROUND_COLOUR = vec3(0.992, 0.965, 0.890);
 
 // ---- noise primitives ----
 float hash(vec2 p) {
@@ -141,7 +140,7 @@ void main() {
     float n2 = fbm(uv * SCALE * 1.4 + t * vec2(-0.2, 0.4));
     float n  = mix(n1, n2, 0.45);
 
-    float bw = 1.0 - step(THRESHOLD, n);
+    float bw   = 1.0 - step(THRESHOLD, n);
 
     vec3 col = mix(BLOB_COLOUR, BACKGROUND_COLOUR, bw);
 

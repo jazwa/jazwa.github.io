@@ -2,6 +2,7 @@
 
 const canvas = document.getElementById('c');
 const gl = canvas.getContext('webgl', { antialias: false });
+gl.getExtension('OES_standard_derivatives');
 
 /* ---- vertex shader (passthrough fullscreen quad) ---- */
 
@@ -13,11 +14,13 @@ void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
 /* ---- fragment shader (animated 2D Perlin-ish noise) ---- */
 
 const fragSrc = `#version 100
+#extension GL_OES_standard_derivatives : enable
 precision highp float;
 
 uniform vec2  u_resolution;
 uniform float u_time;
 uniform float u_speed;
+uniform vec4  u_card;
 
 // ---- tunable knobs ----
 
@@ -27,7 +30,8 @@ const float THRESHOLD = 0.56;   // cutoff for black / white
 const vec2  DRIFT     = vec2(0.18, 0.3);  // panning direction (x/y == SKEW)
 const float ROT_ANGLE = 0.5;    // rotation between FBM octaves
 const int   OCTAVES   = 2;      // detail layers (fewer = rounder blobs)
-const vec3  BLOB_COLOUR       = vec3(0.949, 0.808, 0.380);
+const vec3  BLOB_COLOUR  = vec3(0.361, 0.427, 0.788);
+// const vec3  BLOB_COLOUR       = vec3(0.184, 0.255, 0.655);
 const vec3  BACKGROUND_COLOUR = vec3(0.992, 0.965, 0.890);
 
 // ---- noise primitives ----
@@ -74,7 +78,15 @@ void main() {
     float n2 = fbm(uv * SCALE * 1.4 + t * vec2(-0.2, 0.4));
     float n  = mix(n1, n2, 0.45);
 
-    float bw   = 1.0 - step(THRESHOLD, n);
+    // card dimensions in UV space
+    float div       = mix(u_resolution.y, min(u_resolution.x, u_resolution.y), 0.35);
+    vec2  card_uv   = (u_card.xy - 0.5 * u_resolution) / div;
+    vec2  card_half = u_card.zw / div;
+    vec2  d         = abs(uv - card_uv) - card_half;
+    float dist      = length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
+
+    float edge  = fwidth(n) * 0.5;
+    float bw    = 1.0 - smoothstep(THRESHOLD - edge, THRESHOLD + edge, n);
 
     vec3 col = mix(BLOB_COLOUR, BACKGROUND_COLOUR, bw);
 
@@ -122,6 +134,7 @@ gl.vertexAttribPointer(attrPos, 2, gl.FLOAT, false, 0, 0);
 const uResolution = gl.getUniformLocation(program, 'u_resolution');
 const uTime       = gl.getUniformLocation(program, 'u_time');
 const uSpeed      = gl.getUniformLocation(program, 'u_speed');
+const uCard       = gl.getUniformLocation(program, 'u_card');
 
 const SPEED = 0.8;
 gl.uniform1f(uSpeed, SPEED);
@@ -141,6 +154,17 @@ function resize() {
     canvas.height = window.innerHeight;
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(uResolution, canvas.width, canvas.height);
+
+    const card = document.getElementById('card');
+    if (card && uCard) {
+        const r = card.getBoundingClientRect();
+        gl.uniform4f(uCard,
+            r.left + r.width  * 0.5,
+            r.top  + r.height * 0.5,
+            r.width  * 0.5,
+            r.height * 0.5
+        );
+    }
 }
 window.addEventListener('resize', resize);
 resize();

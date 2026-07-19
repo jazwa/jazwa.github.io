@@ -1,0 +1,24 @@
+{
+  "name": "jazwa.github.io",
+  "version": "1.0.0",
+  "description": "A page for showcasing some of my personal projects and writings.",
+  "main": "shader.js",
+  "scripts": {
+    "build": "npx @11ty/eleventy",
+    "serve": "npx @11ty/eleventy --serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jazwa/jazwa.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jazwa/jazwa.github.io/issues"
+  },
+  "homepage": "https://github.com/jazwa/jazwa.github.io#readme",
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.6"
+  }
+}

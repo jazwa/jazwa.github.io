@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>jazwa</title>
+<script src="https://unpkg.com/htmx.org@2.0.4" crossorigin="anonymous"></script>
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -13,50 +14,26 @@
 
   main {
     position: relative; z-index: 1;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     height: 100vh;
     font-family: 'Times New Roman', serif;
-    color: #111;
-    pointer-events: none;
   }
 
   .card {
     background: #FFF9E6;
-    padding: 2.5rem 3rem;
     border: 2px solid #111;
-    text-align: center;
   }
-
-  h1 {
-    font-size: clamp(2rem, 6vw, 4rem);
-    font-weight: 400;
-    margin: 0;
-  }
-
-  p { font-size: 1.1rem; opacity: 0.8; margin-top: 0.5rem; }
-
-  nav { margin-top: 2.5rem; display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; }
-
-  nav a {
-    pointer-events: auto;
-    color: #111; text-decoration: none; font-size: 1rem;
-    border: 1px solid #111;
-    padding: 0.6rem 1.4rem;
-    transition: background 0.25s, color 0.25s;
-  }
-
-  nav a:hover { background: #111; color: #fff; }
 </style>
 </head>
 <body>
 
 <main>
-  <div class="card">
+  <div class="card" id="card" hx-history-elt>
     <h1>jazwa</h1>
     <p>personal projects &amp; writings</p>
     <nav>
-      <a href="shaker-endtable.md">Shaker Endtable</a>
-      <a href="red-oak-figurine-shelf.md">Figurine Shelf</a>
+      <a href="/shaker-endtable" hx-get="_shaker-endtable.html" hx-target="#card" hx-swap="innerHTML" hx-push-url="true">Shaker Endtable</a>
+      <a href="/figurine-shelf" hx-get="_figurine-shelf.html" hx-target="#card" hx-swap="innerHTML" hx-push-url="true">Figurine Shelf</a>
     </nav>
   </div>
 </main>

@@ -14,4 +14,3 @@ A simple shelf hacked together for some of Clémence's figurines. I actually rea
   <img src="/assets/red-oak-figurine-shelf/at-home.jpg" alt="Mounted - At home">
 </div>
 
-<nav><a href="/">← back</a></nav>

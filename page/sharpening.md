@@ -5,7 +5,7 @@ layout: base.njk
 
 # Sharpening Setup
 
-So, I've finally decided the "wet-towel-on-kitchen-counter" method of sharpening wasn't doing it for me!
+I've finally decided the "wet-towel-on-kitchen-counter" method of sharpening wasn't doing it for me.
 There's a sizeable online community of people who really enjoy sharpening, of which I am definitely not part of. This is my first real attempt to make sharpening less painful. 
 <br>
 <br>
@@ -24,4 +24,3 @@ they get finicky really quickly. Slipping is kind of an issue for this thing. It
   <img src="/assets/sharpening/jig.jpg" alt="Side">
 </div>
 
-<nav><a href="/">← back</a></nav>

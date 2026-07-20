@@ -16,4 +16,3 @@ Made with mostly hand-tools.
   <img src="/assets/shaker-endtable/front.jpg" alt="Front">
 </div>
 
-<nav><a href="/">← back</a></nav>

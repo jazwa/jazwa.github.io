@@ -182,15 +182,21 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-function frame() {
-    const t = baseTime + (performance.now() - t0) * 0.001;
-    gl.uniform1f(uTime, t);
+let lastFrameTime = 0;
+function frameCapped() {
+    const raw = baseTime + (performance.now() - t0) * 0.001;
+    const dt  = raw - lastFrameTime;
+    if (lastFrameTime && dt > 0.1) {
+        baseTime -= dt - 0.1;
+    }
+    lastFrameTime = raw;
+    gl.uniform1f(uTime, raw);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
-    requestAnimationFrame(frame);
+    requestAnimationFrame(frameCapped);
 }
 
 if (isLive) {
-    requestAnimationFrame(frame);
+    requestAnimationFrame(frameCapped);
 } else {
     gl.uniform1f(uTime, baseTime);
     gl.drawArrays(gl.TRIANGLES, 0, 6);

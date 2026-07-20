@@ -1,7 +1,6 @@
 ---
 title: Shaker Endtable
 layout: base.njk
-date: Last Modified
 ---
 
 # Shaker Endtable

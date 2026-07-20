@@ -1,7 +1,6 @@
 ---
 title: Sharpening Setup
 layout: base.njk
-date: Last Modified
 ---
 
 # Sharpening Setup

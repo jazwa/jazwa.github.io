@@ -1,7 +1,6 @@
 ---
-title: Figurine Shelf — jazwa
+title: Figurine Shelf
 layout: base.njk
-date: Last Modified
 ---
 
 # Figurine Shelf

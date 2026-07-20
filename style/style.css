@@ -102,6 +102,46 @@ a {
   outline-offset: 2px;
 }
 
+
+ul {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+li {
+  padding-left: 0.5em;
+}
+
+li.li-gallery::before,
+li.li-external::before,
+li.li-file::before,
+li.li-other::before {
+  display: inline-block;
+  width: 1.3em;
+  vertical-align: middle;
+}
+
+li.li-gallery::before {
+  content: "🖼 ";
+}
+
+li.li-external::before {
+  content: "⤴";
+}
+
+li.li-file::before {
+  content: "🗎";
+}
+
+li.li-other::before {
+  content: "•";
+}
+
+time {
+  font-size: 0.88rem;
+  opacity: 0.8;
+}
+
 @media (max-width: 520px) {
   .cols {
     column-count: 1;

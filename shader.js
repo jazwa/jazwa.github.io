@@ -149,13 +149,12 @@ mqReduced.addEventListener('change', e => {
 /* ---- time continuity across page loads ---- */
 
 const baseTime = parseFloat(sessionStorage.getItem('shader-total')) || 0;
-const t0 = performance.now();
 const livePages = ['/', '/index.html'];
 const isLive = livePages.includes(location.pathname);
+let shaderTime = baseTime;
 
 window.addEventListener('beforeunload', () => {
-    const elapsed = isLive ? (performance.now() - t0) * 0.001 : 0;
-    sessionStorage.setItem('shader-total', baseTime + elapsed);
+    sessionStorage.setItem('shader-total', isLive ? shaderTime : baseTime);
 });
 
 function resize() {
@@ -175,22 +174,21 @@ function resize() {
         );
     }
 
-    const t = baseTime + (performance.now() - t0) * 0.001;
+    const t = isLive ? shaderTime : baseTime;
     gl.uniform1f(uTime, t);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
 window.addEventListener('resize', resize);
 resize();
 
-let lastFrameTime = 0;
-function frameCapped() {
-    const raw = baseTime + (performance.now() - t0) * 0.001;
-    const dt  = raw - lastFrameTime;
-    if (lastFrameTime && dt > 0.1) {
-        baseTime -= dt - 0.1;
-    }
-    lastFrameTime = raw;
-    gl.uniform1f(uTime, raw);
+let lastTS = 0;
+
+function frameCapped(ts) {
+    const dt = lastTS ? Math.min((ts - lastTS) * 0.001, 0.05) : 0;
+    lastTS = ts;
+    shaderTime += dt;
+
+    gl.uniform1f(uTime, shaderTime);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     requestAnimationFrame(frameCapped);
 }

@@ -143,10 +143,12 @@ gl.uniform1f(uSpeed, SPEED);
 
 const baseTime = parseFloat(sessionStorage.getItem('shader-total')) || 0;
 const t0 = performance.now();
+const livePages = ['/', '/index.html'];
+const isLive = livePages.includes(location.pathname);
 
 window.addEventListener('beforeunload', () => {
-    const total = baseTime + (performance.now() - t0) * 0.001;
-    sessionStorage.setItem('shader-total', total);
+    const elapsed = isLive ? (performance.now() - t0) * 0.001 : 0;
+    sessionStorage.setItem('shader-total', baseTime + elapsed);
 });
 
 function resize() {
@@ -165,6 +167,10 @@ function resize() {
             r.height * 0.5
         );
     }
+
+    const t = baseTime + (performance.now() - t0) * 0.001;
+    gl.uniform1f(uTime, t);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
 window.addEventListener('resize', resize);
 resize();
@@ -175,4 +181,10 @@ function frame() {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     requestAnimationFrame(frame);
 }
-requestAnimationFrame(frame);
+
+if (isLive) {
+    requestAnimationFrame(frame);
+} else {
+    gl.uniform1f(uTime, baseTime);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+}

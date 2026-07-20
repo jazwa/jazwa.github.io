@@ -19,42 +19,75 @@ main {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  font-family: 'Garamond', serif;
+  font-family: 'Times New Roman', serif;
+}
+
+i {
+  font-style: italic;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+
+h1,
+h2 {
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+strong {
+  font-weight: bold;
 }
 
 .card {
   background: #FFF9E6;
   border: 4px double #5C6DC9;
   color: #0D1961;
-  padding: 10px;
+  padding: 10px min(8%, 38px);
+  padding-bottom: 3rem;
+  width: min(680px, 100%);
+  margin-top: 3rem;
+  margin-bottom: 2rem;
 }
 
 .card h1 {
   font-weight: 400;
   margin-bottom: 0.5rem;
- }
+}
 
 .card p {
-  margin-bottom: 1rem;
   line-height: 1.5;
- }
+}
 
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   margin-top: 1.5rem;
- }
+}
 
 .gallery img {
   width: 100%;
   display: block;
- }
-
-nav {
-  margin-top: 2rem;
 }
 
-nav a {
-  color: #0D1961;
+.cols {
+  column-count: 2;
+  column-gap: 2rem;
+}
+
+.cols>* {
+  break-inside: avoid;
+}
+
+@media (max-width: 520px) {
+  .cols {
+    column-count: 1;
+  }
 }

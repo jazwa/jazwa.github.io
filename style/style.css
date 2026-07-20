@@ -1,7 +1,12 @@
-html,
+html {
+  width: 100%;
+  height: 100%;
+}
+
 body {
   width: 100%;
   height: 100%;
+  line-height: 1.2;
 }
 
 canvas {
@@ -50,8 +55,10 @@ strong {
   background: #FFF9E6;
   border: 4px double #5C6DC9;
   color: #0D1961;
+  padding: 10px 38px;
   padding: 10px min(8%, 38px);
   padding-bottom: 3rem;
+  width: 680px;
   width: min(680px, 100%);
   margin-top: 3rem;
   margin-bottom: 2rem;
@@ -83,6 +90,16 @@ strong {
 
 .cols>* {
   break-inside: avoid;
+}
+
+a {
+  text-decoration: underline;
+}
+
+:focus-visible,
+:focus {
+  outline: 2px solid #5C6DC9;
+  outline-offset: 2px;
 }
 
 @media (max-width: 520px) {

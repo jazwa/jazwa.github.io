@@ -2,7 +2,7 @@
 
 const canvas = document.getElementById('c');
 const gl = canvas.getContext('webgl', { antialias: false });
-gl.getExtension('OES_standard_derivatives');
+const hasDerivatives = gl.getExtension('OES_standard_derivatives');
 
 /* ---- vertex shader (passthrough fullscreen quad) ---- */
 
@@ -14,7 +14,7 @@ void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
 /* ---- fragment shader (animated 2D Perlin-ish noise) ---- */
 
 const fragSrc = `#version 100
-#extension GL_OES_standard_derivatives : enable
+${hasDerivatives ? '#extension GL_OES_standard_derivatives : enable' : ''}
 precision highp float;
 
 uniform vec2  u_resolution;
@@ -28,10 +28,8 @@ const float SCALE     = 72.0;   // zoom-out factor: higher = smaller features
 const float SKEW      = 0.6;    // diagonal bias amount
 const float THRESHOLD = 0.56;   // cutoff for black / white
 const vec2  DRIFT     = vec2(0.18, 0.3);  // panning direction (x/y == SKEW)
-const float ROT_ANGLE = 0.5;    // rotation between FBM octaves
 const int   OCTAVES   = 2;      // detail layers (fewer = rounder blobs)
 const vec3  BLOB_COLOUR  = vec3(0.361, 0.427, 0.788);
-// const vec3  BLOB_COLOUR       = vec3(0.184, 0.255, 0.655);
 const vec3  BACKGROUND_COLOUR = vec3(0.992, 0.965, 0.890);
 
 // ---- noise primitives ----
@@ -54,7 +52,7 @@ float noise(vec2 p) {
 }
 
 float fbm(vec2 p) {
-    mat2 rot = mat2(cos(ROT_ANGLE), sin(ROT_ANGLE), -sin(ROT_ANGLE), cos(ROT_ANGLE));
+    const mat2 rot = mat2(0.8775826, 0.4794255, -0.4794255, 0.8775826);
     float value = 0.0;
     float amp   = 0.5;
 
@@ -69,7 +67,8 @@ float fbm(vec2 p) {
 // ---- main ----
 
 void main() {
-    vec2 uv  = (gl_FragCoord.xy - 0.5 * u_resolution) / mix(u_resolution.y, min(u_resolution.x, u_resolution.y), 0.35);
+    float divisor = mix(u_resolution.y, min(u_resolution.x, u_resolution.y), 0.35);
+    vec2 uv  = (gl_FragCoord.xy - 0.5 * u_resolution) / divisor;
 
     uv.x    += uv.y * SKEW;
     vec2 t   = vec2(u_time * u_speed);
@@ -79,14 +78,16 @@ void main() {
     float n  = mix(n1, n2, 0.45);
 
     // card dimensions in UV space
-    float div       = mix(u_resolution.y, min(u_resolution.x, u_resolution.y), 0.35);
-    vec2  card_uv   = (u_card.xy - 0.5 * u_resolution) / div;
-    vec2  card_half = u_card.zw / div;
+    vec2  card_uv   = (u_card.xy - 0.5 * u_resolution) / divisor;
+    vec2  card_half = u_card.zw / divisor;
     vec2  d         = abs(uv - card_uv) - card_half;
     float dist      = length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
 
-    float edge  = fwidth(n) * 0.5;
-    float bw    = 1.0 - smoothstep(THRESHOLD - edge, THRESHOLD + edge, n);
+    ${hasDerivatives
+        ? `float edge  = fwidth(n) * 0.5;
+    float bw    = 1.0 - smoothstep(THRESHOLD - edge, THRESHOLD + edge, n);`
+        : `float bw = 1.0 - smoothstep(THRESHOLD - 0.005, THRESHOLD + 0.005, n);`
+    }
 
     vec3 col = mix(BLOB_COLOUR, BACKGROUND_COLOUR, bw);
 
@@ -136,8 +137,14 @@ const uTime       = gl.getUniformLocation(program, 'u_time');
 const uSpeed      = gl.getUniformLocation(program, 'u_speed');
 const uCard       = gl.getUniformLocation(program, 'u_card');
 
-const SPEED = 0.8;
+const mqReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+let SPEED = mqReduced.matches ? 0.15 : 0.8;
 gl.uniform1f(uSpeed, SPEED);
+
+mqReduced.addEventListener('change', e => {
+    SPEED = e.matches ? 0.15 : 0.8;
+    gl.uniform1f(uSpeed, SPEED);
+});
 
 /* ---- time continuity across page loads ---- */
 

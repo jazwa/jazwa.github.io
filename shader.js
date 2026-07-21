@@ -20,7 +20,6 @@ precision highp float;
 uniform vec2  u_resolution;
 uniform float u_time;
 uniform float u_speed;
-uniform vec4  u_card;
 
 // ---- tunable knobs ----
 
@@ -77,12 +76,6 @@ void main() {
     float n2 = fbm(uv * SCALE * 1.4 + t * vec2(-0.2, 0.4));
     float n  = mix(n1, n2, 0.45);
 
-    // card dimensions in UV space
-    vec2  card_uv   = (u_card.xy - 0.5 * u_resolution) / divisor;
-    vec2  card_half = u_card.zw / divisor;
-    vec2  d         = abs(uv - card_uv) - card_half;
-    float dist      = length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
-
     ${hasDerivatives
         ? `float edge  = fwidth(n) * 0.5;
     float bw    = 1.0 - smoothstep(THRESHOLD - edge, THRESHOLD + edge, n);`
@@ -135,7 +128,6 @@ gl.vertexAttribPointer(attrPos, 2, gl.FLOAT, false, 0, 0);
 const uResolution = gl.getUniformLocation(program, 'u_resolution');
 const uTime       = gl.getUniformLocation(program, 'u_time');
 const uSpeed      = gl.getUniformLocation(program, 'u_speed');
-const uCard       = gl.getUniformLocation(program, 'u_card');
 
 const mqReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 let SPEED = mqReduced.matches ? 0.15 : 0.8;
@@ -164,17 +156,6 @@ function resize() {
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(uResolution, canvas.width, canvas.height);
 
-    const card = document.getElementById('card');
-    if (card && uCard) {
-        const r = card.getBoundingClientRect();
-        gl.uniform4f(uCard,
-            r.left + r.width  * 0.5,
-            r.top  + r.height * 0.5,
-            r.width  * 0.5,
-            r.height * 0.5
-        );
-    }
-
     const t = baseTime + (performance.now() - t0) * 0.001;
     gl.uniform1f(uTime, t);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -183,7 +164,7 @@ window.addEventListener('resize', resize);
 resize();
 
 function frame(ms) {
-    gl.uniform1f(uTime, ms * 0.001);
+    gl.uniform1f(uTime, baseTime + ms * 0.001);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     requestAnimationFrame(frame);
 }

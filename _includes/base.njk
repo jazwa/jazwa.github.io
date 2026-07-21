@@ -10,8 +10,11 @@
 <body>
 
 <main>
-  <div class="card" id="card">
+  <div class="card">
     {{ content | safe }}
+    {% if page.url != '/' %}
+    <nav><a href="/">← Home</a></nav>
+    {% endif %}
   </div>
 </main>
 

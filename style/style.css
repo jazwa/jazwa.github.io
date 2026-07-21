@@ -61,18 +61,14 @@ strong {
   background: #FFF9E6;
   border: 4px double #5C6DC9;
   color: #0D1961;
-  padding: 10px 38px;
-  padding: 10px min(8%, 38px);
-  padding-bottom: 3rem;
-  width: 680px;
+  padding: 10px min(8%, 38px) 3rem;
   width: min(680px, 100%);
   margin-top: 3rem;
   margin-bottom: 2rem;
+}
 
-
-  p {
-    text-align: justify;
-  }
+.card p {
+  text-align: justify;
 }
 
 
@@ -95,16 +91,21 @@ strong {
 }
 
 .cols {
-  column-count: 2;
-  column-gap: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem;
 }
 
-.cols>* {
-  break-inside: avoid;
+.cols> :last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 a {
   text-decoration: underline;
+}
+
+nav {
+  margin-top: 1rem;
 }
 
 :focus-visible,
@@ -119,34 +120,6 @@ ul {
   margin-bottom: 0.5rem;
 }
 
-li {
-  padding-left: 0.5em;
-}
-
-li.li-gallery::before,
-li.li-external::before,
-li.li-file::before,
-li.li-other::before {
-  display: inline-block;
-  width: 1.3em;
-  vertical-align: middle;
-}
-
-li.li-gallery::before {
-  content: "🖼 ";
-}
-
-li.li-external::before {
-  content: "⤴";
-}
-
-li.li-file::before {
-  content: "🗎";
-}
-
-li.li-other::before {
-  content: "•";
-}
 
 time {
   font-size: 0.88rem;
@@ -167,7 +140,11 @@ time {
   }
 
   .cols {
-    column-count: 1;
+    grid-template-columns: 1fr;
+  }
+
+  .cols> :last-child:nth-child(odd) {
+    grid-column: auto;
   }
 
   .gallery {

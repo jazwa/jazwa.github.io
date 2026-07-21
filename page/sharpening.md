@@ -17,7 +17,7 @@ I also have some inexpensive Aliexpress diamond plates which work fine. I just l
 <br>
 I use a Veritas short-blade honing guide for most things. I find this holding style works well for my tools; it can
 hold my japanese chisels for example. Most jigs on the market are actually pretty limited in the kind of geometries they can hold, that or
-they get finicky really quickly. Slipping is kind of an issue for this thing. It's controlable, though.
+they get finicky really quickly. Slipping is kind of an issue for this thing. It's controllable, though.
 
 <div class="gallery">
   <img src="/assets/sharpening/tray.jpg" alt="Full view of the tray">

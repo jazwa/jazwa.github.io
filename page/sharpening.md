@@ -5,8 +5,8 @@ layout: base.njk
 
 # Sharpening Setup
 
-I've finally decided the "wet-towel-on-kitchen-counter" method of sharpening wasn't doing it for me.
-There's a sizeable online community of people who really enjoy sharpening, of which I am definitely not part of. This is my first real attempt to make sharpening less painful. 
+I finally decided the "wet-towel-on-kitchen-counter" method of sharpening wasn't doing it for me.
+This is my first real attempt to make sharpening less painful. There's a sizeable online community of people who really enjoy sharpening, of which I am definitely not a part of.
 <br>
 <br>
 It's a pretty simple setup - three bridges and a tray underneath. My grit progression is 220 -> 1000 -> 5000. I don't have access to
@@ -20,7 +20,7 @@ hold my japanese chisels for example. Most jigs on the market are actually prett
 they get finicky really quickly. Slipping is kind of an issue for this thing. It's controlable, though.
 
 <div class="gallery">
-  <img src="/assets/sharpening/tray.jpg" alt="Full view">
-  <img src="/assets/sharpening/jig.jpg" alt="Side">
+  <img src="/assets/sharpening/tray.jpg" alt="Full view of the tray">
+  <img src="/assets/sharpening/jig.jpg" alt="Honing jig and japanese chisel">
 </div>
 

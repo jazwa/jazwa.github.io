@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'Source Serif';
   src: url('/assets/SourceSerif4.ttf') format('truetype');
+  font-display: swap;
 }
 
 html {
@@ -12,7 +13,7 @@ body {
   width: 100%;
   height: 100%;
   line-height: 1.2;
-  font-family: 'Source Serif', serif;
+  font-family: 'Source Serif', Georgia, serif;
   background: #FDF6E3;
 }
 

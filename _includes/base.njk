@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ title }}</title>
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" 
+  integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
+  crossorigin="anonymous"></script>
 <link rel="preload" href="/assets/SourceSerif4.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="/style/reset.css">
 <link rel="stylesheet" href="/style/style.css">
@@ -11,11 +14,13 @@
 <body>
 
 <main>
-  <div class="card">
-    {{ content | safe }}
-    {% if page.url != '/' %}
-    <nav><a href="/">← Home</a></nav>
-    {% endif %}
+  <div class="card" hx-boost="true" hx-target="#card-inner" hx-select="#card-inner" hx-swap="innerHTML" hx-history-elt>
+    <div id="card-inner">
+      {{ content | safe }}
+      {% if page.url != '/' %}
+      <nav><a href="/">← Home</a></nav>
+      {% endif %}
+    </div>
   </div>
 </main>
 

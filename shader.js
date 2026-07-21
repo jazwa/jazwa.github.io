@@ -142,12 +142,8 @@ mqReduced.addEventListener('change', e => {
 
 const baseTime = parseFloat(sessionStorage.getItem('shader-total')) || 0;
 const t0 = performance.now();
-const livePages = ['/', '/index.html'];
-const isLive = livePages.includes(location.pathname);
-
 window.addEventListener('beforeunload', () => {
-    const elapsed = isLive ? (performance.now() - t0) * 0.001 : 0;
-    sessionStorage.setItem('shader-total', baseTime + elapsed);
+    sessionStorage.setItem('shader-total', baseTime + (performance.now() - t0) * 0.001);
 });
 
 function resize() {
@@ -168,10 +164,4 @@ function frame(ms) {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     requestAnimationFrame(frame);
 }
-
-if (isLive) {
-    requestAnimationFrame(frame);
-} else {
-    gl.uniform1f(uTime, baseTime);
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
-}
+requestAnimationFrame(frame);
